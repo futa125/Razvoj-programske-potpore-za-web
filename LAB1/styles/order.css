@@ -1,0 +1,55 @@
+.container-inventory-grid {
+    display: grid;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    justify-items: center;
+}
+.inventory-item-image {
+    width: 200px;
+    height: 200px;
+    object-fit: cover;
+}
+.inventory-item-description {
+    font-family: 'Dancing Script', cursive;
+    font-size: 2rem;
+    text-align: center;
+    margin-top: -0.5rem;
+    margin-bottom: 1rem;
+}
+.progress-bar-container {
+    display: grid;
+    position: relative;
+    grid-template-rows: 1fr 1fr;
+    grid-template-columns: 0.365fr;
+    justify-content: center;
+}
+.progress-bar-empty {
+    justify-self: center;
+    width: 100%;
+    height: 1.2rem;
+    border: solid #e0aacd 0.25rem;
+    border-radius: 1rem;
+    margin-top: -0.05rem;
+}
+.progress-bar-full {
+    background-color: #ab4f8b;
+    border-radius: 1rem;
+    width: 70%;
+    height: 100%;
+}
+.progress-bar-empty:hover .progress-bar-percent {
+    display: block;
+}
+.progress-bar-loading {
+    justify-self: left;
+    margin-bottom: 0rem;
+    margin-top: 0;
+    font-size: 1.2rem;
+    color: black;
+}
+.progress-bar-percent {
+    display: none;
+    transform: translateX(calc(((0.5/0.7) - 0.5) * 100%));
+    font-size: 1rem;
+    color: black;
+    text-align: center;
+}
