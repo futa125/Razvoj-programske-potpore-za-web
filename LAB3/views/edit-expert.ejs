@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <title> Edit Expert </title>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="shortcut icon" type="image/png" href="/images/flower-icon.png"/>
+    <link rel="stylesheet" type="text/css" href="/vendor/normalize.css">
+    <link rel="stylesheet" type="text/css" href="/styles/main.css">
+    <meta http-equiv="content-type" content="text/html; charset=utf-8"/>
+</head>
+
+<body class="content">
+
+<%- include(`partials/header`); %>
+
+<main class="main">
+    <div class="centered-container">
+        <h1 class="decorated-title font-secondary main-color">
+            Edit 
+            <span class="main-color-emphasized"> Expert</span> 
+            for item 
+            <span class="main-color-emphasized"> <%= item.name %> </span>
+        </h1> 
+        <div class="separator"></div>
+    </div>
+
+    <form action="<%= expert.id %>" method="POST" class="fieldset-centered-container">
+        <fieldset class="fieldset">
+            <div class="label-input">
+                <label for="name"> Name </label>
+                <input type="text" name="name" id="name" value="<%= expert.name %>" size="50">
+            </div>
+            <div class="label-input">
+                <label for="surname"> Name </label>
+                <input type="text" name="surname" id="surname" value="<%= expert.surname %>" size="50">
+            </div>
+            <div class="label-input">
+                <label for="email"> E-mail </label>
+                <input type="email" name="email" id="email" value="<%= expert.email %>" size="50">
+            </div>
+            <div class="label-input">
+                <label for="employedsince"> Employed Since </label>
+                <input type="text" name="employedsince" id="employedsince" value="<%= expert.employedsince %>" size="50">
+            </div>
+            <div class="label-input">
+                <label for="expertsince"> Expert Since </label>
+                <input type="text" name="expertsince" id="expertsince" value="<%= expert.expertsince %>" size="50">
+            </div>
+            <hr>
+            <div class="submitButtons">
+                <input type="submit" class="btn" value="Submit">
+                <input type="reset" class="btn" value="Reset">
+            </div>
+        </fieldset>
+    </form>
+
+</main>
+
+<%- include(`partials/footer`); %>
+
+</body>
+
+</html>

@@ -36,6 +36,47 @@
         </div>
     </div>
 
+    <div class="centered-container">
+        <h1 class="decorated-title font-secondary main-color">
+            <span class="main-color-emphasized">Item</span>
+            Experts</h1>
+        <div class="separator"></div>
+    </div>
+
+
+    <% if (experts.rows.length === 0) { %>
+                
+        <div class="centered-container">
+            <span class="photo-box-title font-secondary main-color">No experts for this item</span>
+        </div>
+                
+    <% } else { %>
+
+    
+        <% for (expert of experts.rows) { %>
+                
+            <section class="section secondary-color-bg expert_supplier_container">
+                <h3 class="decorated-title font-secondary main-color-emphasized">
+                    <%= expert.name %> <%= expert.surname %>    
+                    <span><a href="/items/<%= item.id %>/editexpert/<%= expert.id %>"><img class="icon_add_edit" src="/images/pencil.png" alt=""></img></a></span>
+                </h3>
+                <div class="item-view-text-property main-color">
+                    E-mail: <span class="item-view-text-value"> <%= expert.email %> </span>
+                </div>
+                <div class="item-view-text-property main-color">
+                    Employed since: <span class="item-view-text-value"> <%= expert.employedsince %> </span>
+                </div>
+                <div class="item-view-text-property main-color">
+                    Expert since: <span class="item-view-text-value"> <%= expert.expertsince %> </span>
+                </div>
+                <hr>
+            </section>
+
+        <% } %>
+
+    
+    <% } %>
+
 </main>
 
 <%- include(`partials/footer`); %>

@@ -11,6 +11,7 @@ app.set('view engine', 'ejs');
 
 app.use(express.static(path.join(__dirname, 'public')));
 
+app.use(express.urlencoded({ extended: true}));
 app.use('/', homeRouter);
 app.use('/order', orderRouter);
 app.use('/items', itemRouter);
