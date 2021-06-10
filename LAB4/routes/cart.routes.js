@@ -38,7 +38,7 @@ router.get('/add/:id', function (req, res, next) {
 
 router.get('/remove/:id', function (req, res, next) {
     //####################### ZADATAK #######################
-    //brisanje jednog artikla iz košarice
+    //brisanje jednog artikla iz košaricee
 
     (async () => {
         if( req.session.cart === undefined || req.session.cart.invalid === true) {
