@@ -16,6 +16,7 @@ const signupRoute = require('./routes/signup.routes');
 const cartRoute = require('./routes/cart.routes');
 const userRoute = require('./routes/user.routes');
 const checkoutRoute = require('./routes/checkout.routes');
+const courierRoute = require('./routes/courier.routes');
 
 //middleware - predlošci (ejs)
 app.set('views', path.join(__dirname, 'views'));
@@ -32,7 +33,7 @@ app.use(express.urlencoded({ extended: true }));
 //pohrana sjednica u postgres bazu korštenjem connect-pg-simple modula
 app.use(session({
     store: new pgSession({
-        conString: "postgres://postgres:tmppass@localhost:5433/web-lab4"
+        pool: db.pool
     }),
     secret: "foo",
     resave: false,
@@ -52,6 +53,7 @@ app.use('/signup', signupRoute);
 app.use('/cart', cartRoute);
 app.use('/user', userRoute);
 app.use('/checkout', checkoutRoute);
+app.use('/courier', courierRoute);
 
 
 //pokretanje poslužitelja na portu 3000

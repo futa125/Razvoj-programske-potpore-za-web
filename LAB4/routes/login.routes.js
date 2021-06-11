@@ -1,14 +1,17 @@
 const express = require('express');
 const router = express.Router();
-const User = require('../models/UserModel')
+const User = require('../models/UserModel');
 
 
 router.get('/', function (req, res, next) {
     //####################### ZADATAK #######################
     //vrati login stranicu
 
-    res.render('login', { err: undefined, linkActive: 'login', user: req.session.user });
+    let error_message = req.session.err;
+    req.session.err = undefined;
 
+    res.render('login', { err: error_message, linkActive: 'login', user: req.session.user });
+    
     //#######################################################
 
 });

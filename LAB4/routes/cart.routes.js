@@ -9,7 +9,7 @@ router.get('/', cartSanitizer, function (req, res, next) {
     // prikaz košarice uz pomoć cart.ejs
     (async () => {
 
-        res.render('cart', { user: req.session.user, linkActive: 'cart', title: 'Flower power!', cart: req.session.cart, err: undefined });
+        res.render('cart', { user: req.session.user, linkActive: 'cart', title: 'Cart', cart: req.session.cart, err: undefined });
 
     })()
 
@@ -27,7 +27,7 @@ router.get('/add/:id', function (req, res, next) {
         }
 
         await cart.addItemToCart(req.session.cart, req.params.id.toString(), 1);
-        res.redirect("/");
+        res.sendStatus(200);
 
     })()
 
@@ -46,7 +46,7 @@ router.get('/remove/:id', function (req, res, next) {
         }
 
         await cart.removeItemFromCart(req.session.cart, req.params.id.toString(), 1);
-        res.redirect("/");
+        res.sendStatus(200);
 
     })()
 
