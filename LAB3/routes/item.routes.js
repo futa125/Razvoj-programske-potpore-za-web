@@ -1,4 +1,5 @@
 var express = require('express');
+const { body, validationResult } = require('express-validator');
 var router = express.Router();
 const db = require('../db/index.js');
 
@@ -27,8 +28,7 @@ router.get('/:id([0-9]|[1-9][0-9])', async (req, res) => {
         console.log(err);
         res.status(404).send("Not found");
     }
-
-})
+});
 
 router.get('/:item_id([0-9]|[1-9][0-9])/editexpert/:expert_id([0-9]|[1-9][0-9])', async (req, res) => {
     try {
@@ -52,88 +52,46 @@ router.get('/:item_id([0-9]|[1-9][0-9])/editexpert/:expert_id([0-9]|[1-9][0-9])'
 
     } catch (err) {
         console.log(err);
-        res.status(404).send("Not found");
+        res.sendStatus(400);
     }
 
-})
+});
 
-router.post('/:item_id([0-9]|[1-9][0-9])/editexpert/:expert_id([0-9]|[1-9][0-9])', async (req, res) => {
-    class validationError {
-        constructor(msg, param) {
-            this.msg = msg;
-            this.param = param;
-        }
-    }
+router.post('/:item_id([0-9]|[1-9][0-9])/editexpert/:expert_id([0-9]|[1-9][0-9])',
+            body('name').isLength({min: 3, max: 20}),
+            body('surname').isLength({min: 3, max: 20}),
+            body('email').isEmail(),
+            body('employedsince').isInt({min: 1970, max: 2021}),
+            body('expertsince').isInt({min: 1970, max: 2021}), async (req, res) => {
 
-    let errors = [];
-    let errDB = '';
-    const item_id = req.params.item_id;
-    const expert_id = req.params.expert_id;
+    const errors = validationResult(req);
 
-    const name = req.body.name;
-    const surname = req.body.surname;
-    const email = req.body.email;
-    const emailRegex = /^[a-zA-Z0-9.!#$%&'*+/=?^`{|}~-]+@[a-zA-Z0-9-]+(?:.[a-zA-Z0-9-]+)*$/
-    let empSince = req.body.employedsince;
-    let expSince = req.body.expertsince;
-
-    if (!(name.length >= 3 && name.length <= 20)) {
-        errors.push(new validationError("Invalid value", name));
-    }
-
-    if (!(surname.length >= 3 && surname.length <= 20)) {
-        errors.push(new validationError("Invalid value", surname));
-    }
-
-    try {
-        empSince = parseInt(empSince)
-
-        if (!(empSince >= 1970 && empSince <= 2021)) {
-            throw err
-        }
-
-    } catch (err) {
-        errors.push(new validationError("Invalid value", empSince));
-    }
-
-    try {
-        expSince = parseInt(expSince)
-
-        if (!(expSince >= 1970 && expSince <= 2021)) {
-            throw err
-        }
-
-    } catch (err) {
-        errors.push(new validationError("Invalid value", expSince));
-    }
-
-    if (!(emailRegex.test(email))) {
-        errors.push(new validationError("Invalid value", email));
-    }
-
-    if (errors.length === 0) {
-        try {
-            await db.query(`UPDATE experts SET name = '${name}', surname = '${surname}', email = '${email}', 
-            employedsince = ${empSince}, expertsince = ${expSince} WHERE id = ${expert_id}`);
-    
-        } catch (err) {
-            errDB = err.message;
-        }
-    }
-
-    if (errors.length !== 0 || errDB !== '') {
-        res.render("error", {
-            title: "Edit Expert",
+    if (!errors.isEmpty()) {
+        res.render('error', {
+            title: 'Edit Expert',
             linkActive: '',
-            errors: errors.length === 0 ? 'none' : errors,
-            errDB: errDB,
-            itemID: item_id
+            errors: errors.errors,
+            itemID: req.params.item_id
         })
 
-    } else {
-        res.redirect(`/items/${item_id}`);
+        return;
     }
 
-})
+    try {
+        await db.query(`UPDATE experts SET name = '${req.body.name}', surname = '${req.body.surname}', email = '${req.body.email}', 
+                        employedsince = ${req.body.employedsince}, expertsince = ${req.body.expertsince} WHERE id = ${req.params.expert_id}`);
+        
+        res.redirect(`/items/${req.params.item_id}`);
+
+    } catch (err) {
+        res.render('error', {
+            title: 'Edit Expert',
+            linkActive: '',
+            errors: 'none',
+            errDB: err.message,
+            itemID: req.params.item_id
+        })
+    }
+});
 
 module.exports = router;
